@@ -6,12 +6,14 @@ import "../js/api.js" as Api
 
 PageWrapper {
     id: usersList
-    signal user(string id)
+    signal user(string id, string name)
 
     property string objID: ""
     property string objType: ""
     property int limit: 0
     property alias usersModel: usersModel
+
+    property PageWrapper selectUserAction
 
     width: parent.width
     height: parent.height
@@ -23,8 +25,12 @@ PageWrapper {
 
     function load() {
         var page = usersList;
-        page.user.connect(function(params){
-            stack.push(Qt.resolvedUrl("User.qml"),{"userID":params});
+        page.user.connect(function(id, name){
+            if(selectUserAction) {
+                selectUserAction.userSelected(id, name)
+            } else {
+                stack.push(Qt.resolvedUrl("User.qml"),{"userID":id});
+            }
         });
         if (objType === "user") {
             headerText = qsTr("USER FRIENDS")
@@ -70,7 +76,7 @@ PageWrapper {
             }
 
             onAreaClicked: {
-                usersList.user( model.id );
+                usersList.user( model.id, model.name );
             }
         }
     }

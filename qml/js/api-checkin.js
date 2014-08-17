@@ -91,7 +91,7 @@ checkin.parseLikeCheckin = function(response, page) {
     processLikes(page.likeBox, data);
 }
 
-checkin.addCheckin = function(venueID, page, comment, friends, facebook, twitter) {
+checkin.addCheckin = function(venueID, page, comment, friends, facebook, twitter, mentions) {
     var url = "checkins/add?";
     if(venueID!=null) {
         url += "venueId=" + venueID;
@@ -110,6 +110,9 @@ checkin.addCheckin = function(venueID, page, comment, friends, facebook, twitter
         broadcast += ",twitter";
     }
     url += "&broadcast=" + broadcast;
+    if(mentions) {
+        url += "&mentions=" + mentions
+    }
     url += "&" + getLocationParameter();
     url += "&" + getAccessTokenParameter();
 
